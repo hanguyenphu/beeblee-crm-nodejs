@@ -2,7 +2,7 @@ const Contact = require("../models/contacts");
 const Business = require("../models/business");
 //Create a new Contact
 //required business object sent from client and a new contact
-exports.createContactForBusiness = async (req, res) => {
+exports.createContactForExistingBusiness = async (req, res) => {
     try {
         //When find a duplicated contact return it to client
         if (req.duplicated) {
@@ -33,11 +33,11 @@ exports.createContactForBusiness = async (req, res) => {
 exports.getContact = async (req, res) => {
     const id = req.params.id
     try {
-      
+
         const contact = await Contact.findById(id)
         if(!contact) {
             return res.status(400).sned('Cannot find the contact')
-        } 
+        }
         await contact.populate("businesses").execPopulate();
         res.status(200).send(contact)
 
@@ -46,6 +46,15 @@ exports.getContact = async (req, res) => {
     }
 }
 
+
+exports.getAllContacts = async(req, res) => {
+    try {
+        const contacts = await Contact.find({}).sort({ updatedAt: -1 });
+        res.send(contacts)
+    } catch (error) {
+        res.status(500).send();
+    }
+}
 
 
 //Get all businesses under a contact
@@ -67,10 +76,10 @@ exports.getAllBusinessUnderContact = async (req, res) => {
 
 //Update a contact
 exports.updateContact = async (req, res) => {
-   
+
     const updates = Object.keys(req.body);
     const allowedUpdates = ["name", "email", "phone", "_id"];
- 
+
     const isValidOperation = updates.every(update =>
         allowedUpdates.includes(update)
     );

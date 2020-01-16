@@ -52,7 +52,7 @@ exports.removeContactFromBusiness = async (req, res) => {
         }
 
         res.status(200).send(business)
-       
+
     } catch (error) {
         res.status(500).send();
     }
@@ -88,15 +88,15 @@ exports.updateBusiness = async (req, res) => {
 exports.getBusinessDetail = async (req, res) => {
     const _id = req.params.id;
     try {
-        const businesses = await Business.findById({ _id });
+        const business = await Business.findById({ _id });
 
-        if (!businesses) {
+        if (!business) {
             return res.status(400).send();
         }
-        await businesses.populate("contacts").execPopulate();
-        await businesses.populate("province").execPopulate();
+        await business.populate("contacts").execPopulate();
+        await business.populate("province").execPopulate();
 
-        res.send({ businesses });
+        res.send({ business });
     } catch (err) {
         res.status(400).send();
     }
