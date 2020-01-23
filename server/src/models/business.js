@@ -40,9 +40,7 @@ const businessSchema = new mongoose.Schema(
     ]
   },
   {
-    timestamps: true
-  },
-  {
+    timestamps: true,
     toJSON: {
       virtuals: true
     }
@@ -56,9 +54,11 @@ businessSchema.methods.addContact = async function(contactId) {
   return business;
 };
 
-businessSchema.virtual("url").get(function() {
-  return `businesses/${this._id}`;
-});
+businessSchema.virtual('projects', {
+  ref: 'Project',
+  localField: '_id',
+  foreignField: 'business'
+})
 
 const Business = mongoose.model("Business", businessSchema);
 module.exports = Business;
