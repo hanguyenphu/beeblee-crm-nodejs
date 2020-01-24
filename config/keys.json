@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "beeblee-crm",
+  "private_key_id": "b5110e5997e6aaad7e1a4c1749ddaee35d549884",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCw+E1ThlfQqYzA\noanRBjlV459NLSi74ZM3IWuz2xg6tJ7ezPddrsVgo+0yKkVt14SA9p3bJYtIQAeX\nrQGKBoIJErlRG0tS0XKwN5gBuBjwhlhXL/somXCzjzXo23K1VtCRbBxZDKg4eNVP\nzsYGhQlUdmZFZ8ko1zWU26KC+l4qjMf9frM52rVLEfNB7fknASyPUFbynBEmEPBE\nY97rlxYhSaRNh99RQxBTkPt7H7tak3urW/SAhQp96OyiNhA6FHefnCePUbnj9jsF\nn9dTRiVgUXSNY2caJqPAxXOQdgKEAxXAoS+g2qsJm6DGRV+GRcH13B64YB6hd0i/\nJ/HyMdgbAgMBAAECgf9iC9og7HgP+IqC2bkRQDbZNG3jKaHnyzzveRSyu4WGVjZZ\nj4rShyx+M6lhTF+AURHttrS+iuPKo67mhHOAhRqGQa6/wN96guWHu+/7roN4FEvd\nV41PG7PVHQLr1VPizrZp21Eur6nY9Rk5nisYcZyPBF9Pv1szxV1qRkVDS8iKyYYI\nZMiHZOtXClqyAXDtg1U9wiZnJ4/WBqNN8alOyYrJ1ds331PVR6Pp5husu4JQ1ZeH\nw8SsBz3efnOjItiBxkBsMJY3/8pPiGMLRlULzvhbcHtsHBHEtsozpvXAAhef7vs7\nS8Q1R9T48Bu2SseIe0+ATg0x97TDvf5Fy3NKw+0CgYEA+ECEB1m3+RTlzY9n6Dc1\nQFvI49W6h13kpGxTL9Kd006ElihmCzyxB6NEYI94NKZGTcWpXskd4J3rpCMDsVrf\nh7KuxZhGKhQ1BmK2jExkAl8tWxYDYR8pg1xiISq//mJzJ23hZ/LogdRIbvkZyTwF\nyzGKp1G0B/+XN/SHwo43508CgYEAtn5BslUi1CfOPaNvQhdJfyU5u57jaBtXqWe1\n5bGVW6esIGX/c78+dAiroDPWuXTPTSBQ4VZNv96pYFNrQbwYMXMzKBJDzJ69PTi6\n45EB/ptTUV49vprQzOpbz2pH5hwZ0SVtDqqNUCjOFdrjGqqkuIcK+o8/q2vSECnE\ne6SQj3UCgYEA1e/TV/pLf04xFEsHgqlBLOtsXlvr2Yhi6AeqUMYy2M0LmdPKzNhK\nv4hF/ujk8Ipyf8ddxJ+RLecqEVNTdV4Y0Hp9/y7RGKY9Y/lh09ppPVoEXkDEPMh8\nIAZXUrnipzj0gABDhi9hi7EDkw7819zwKUHSeYsBmPr8uG31KQciyiUCgYEAgWhs\nm9IFXZ5QgKMJfTtYMeIq22HjbmqdMhLKCPRxrknrJBpQGDsQRWX0lijMZjxv2AhH\nclMp1RpGz3i4ASgpm79OEmdJTqtuFCDLXh3w5SQt4/BJJoVP9U9nBWEfVQyuPgIl\nIJZOmP4mjZbnHnzNS9DvNxgnlR5jGnUT0H20yRUCgYBFPpw99N+GPVYb4IW7rRKz\nvdRyAHYoZQ72Q/rrkoFwIdeLAJ/ncR//loRvAG5VN8ixN0/zsK4FsbxndeJxFb54\nXXMLf8jCj17X03Xkh/ibvWrsDRDGUYHFwEGDiIOn4sOsSiXzpU9IIWvbhC+P8mAf\nrcH9Di/9Lzv0D5KYC1jEhQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "beeblee-crm@beeblee-crm.iam.gserviceaccount.com",
+  "client_id": "100248476565512814630",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/beeblee-crm%40beeblee-crm.iam.gserviceaccount.com"
+}

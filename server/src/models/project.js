@@ -55,5 +55,11 @@ projectSchema.virtual('accounts', {
   foreignField: 'project'
 })
 
+projectSchema.virtual('uploads', {
+  ref: 'Upload',
+  localField: '_id',
+  foreignField: 'project'
+})
+
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

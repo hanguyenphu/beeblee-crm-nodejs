@@ -63,6 +63,7 @@ exports.getProjectDetail = async (req, res) => {
     await project.populate("category").execPopulate();
     await project.populate("status").execPopulate();
     await project.populate("accounts").execPopulate();
+    await project.populate("uploads").execPopulate();
 
     res.status(200).send(project);
   } catch (error) {
