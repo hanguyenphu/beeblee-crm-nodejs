@@ -18,23 +18,25 @@ exports.loginUser = async (req, res) => {
             req.body.email,
             req.body.password
         );
+        if(!user.active){
+            return res.status(400).send({message:"Not Authorized"})
+        }
         const token = await user.generateAuthToken();
-
         res.send({ user, token });
     } catch (err) {
-        res.status(400).send();
+        res.status(500).send();
     }
 }
 
 exports.logoutUser = async (req, res) => {
     try {
-       
+
         req.user.tokens = req.user.tokens.filter(token => {
             return token.token !== req.token;
         });
-       
+
         await req.user.save();
-       
+
         res.send('Logout');
     } catch (err) {
         res.status(500).send();
@@ -70,7 +72,7 @@ exports.updateUserPassword = async (req, res) => {
     const isValidOperation = updates.every(update =>
         allowedUpdates.includes(update)
     );
-    
+
     if (!isValidOperation) {
         return res.status(400).send({ error: "Invalid updates!" });
     }

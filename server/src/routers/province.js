@@ -4,11 +4,13 @@ const auth = require("../middleware/auth");
 const provinceController = require("../controllers/provinceController")
 
 
-//Create a province 
+//Create a province
 router.post("/provinces", auth, provinceController.createProvince );
 
 // Get all provinces
 router.get("/provinces", auth, provinceController.getAllProvinces);
+
+router.get("/provinces/:id", auth, provinceController.getProvinceDetail)
 
 // Update a province
 router.patch("/provinces/:id", auth, provinceController.updateProvince);

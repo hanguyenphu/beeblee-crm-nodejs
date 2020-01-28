@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
+
     phone: {
         type: String,
         required: true,
@@ -54,15 +59,15 @@ const userSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ], 
-   
+    ],
+
+}, {
+    toJSON: {
+        virtuals: true
+    }
 });
 
-userSchema.virtual('businesses', {
-    ref: 'Business',
-    localField: '_id',
-    foreignField: 'created_by'
-})
+
 
 //hash password before saving
 userSchema.pre("save", async function(next) {

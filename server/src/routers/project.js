@@ -6,7 +6,9 @@ const projectController = require("../controllers/projectController")
 //Create a province
 router.post("/projects", auth, projectController.createProject );
 
-router.get("/projects/business/:id", auth, projectController.getAllProjects)
+router.get("/projects/business/:id", auth, projectController.getAllProjectsOfBusiness)
+
+router.get("/projects", auth, projectController.getAllProjects );
 
 router.get("/projects/:id",  auth, projectController.getProjectDetail)
 

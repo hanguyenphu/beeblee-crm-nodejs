@@ -1,8 +1,8 @@
 const Project = require("../models/project");
 
 exports.createProject = async (req, res) => {
-  const project = new Project(req.body);
-
+  var project = new Project(req.body);
+  project.contributors.push(req.user._id);
   try {
     await project.save();
     res.status(200).send(project);
@@ -11,13 +11,76 @@ exports.createProject = async (req, res) => {
   }
 };
 
-exports.getAllProjects = async (req, res) => {
+exports.getAllProjectsOfBusiness = async (req, res) => {
   const businessId = req.params.id;
   try {
-    const projects = await Project.find({ business: businessId });
+    var projects = await Project.find({ business: businessId });
+    if (req.user.role !== "admin") {
+      projects = projects.filter(project =>
+        project.contributors.includes(req.user._id)
+      );
+    }
+
     res.status(200).send(projects);
   } catch (error) {
     res.status(500).send();
+  }
+};
+
+//Populate data with pagination
+//limit 1 page 10 items
+exports.getAllProjects = async (req, res) => {
+  try {
+    var pageNo = parseInt(req.query.pageNo);
+    var size = 10;
+    var query = {};
+
+    if (pageNo < 0 || pageNo === 0) {
+      response = {
+        error: true,
+        message: "invalid page number, should start with 1"
+      };
+      return res.json(response);
+    }
+
+    query.skip = size * (pageNo - 1);
+    query.limit = size;
+
+    var count = 0;
+
+    var projects = [];
+    //defend of role of user populate the project data
+    //if admin populate all
+    if (req.user.role === "admin") {
+      projects = await Project.find({}, {}, query).sort({
+        createdAt: -1
+      });
+      //get total number of project for admin
+      count = await Project.countDocuments({}, function(err, count) {
+        return count;
+      });
+
+      //populate only projects where user is a contributor
+    } else {
+      projects = await Project.find(
+        { contributors: req.user._id },
+        {},
+        query
+      ).sort({
+        createdAt: -1
+      });
+      //get total number of project for user
+      count = await Project.countDocuments(
+        { contributors: req.user._id },
+        function(err, count) {
+          return count;
+        }
+      );
+    }
+
+    res.status(200).send({ projects, count });
+  } catch (error) {
+    res.status(500).send({ message: "Cannot fetch Data" });
   }
 };
 
@@ -56,8 +119,16 @@ exports.getProjectDetail = async (req, res) => {
   const projectId = req.params.id;
   try {
     const project = await Project.findById(projectId);
+
     if (!project) {
-      res.status(400).send();
+      return res.status(400).send();
+    }
+    //If user is not a contributor or an admin
+    if (
+      !project.contributors.includes(req.user._id) &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(400).send();
     }
     await project.populate("business").execPopulate();
     await project.populate("category").execPopulate();

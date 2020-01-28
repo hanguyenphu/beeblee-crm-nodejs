@@ -39,7 +39,13 @@ const projectSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category"
-    }
+    },
+    contributors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ]
   },
   {
     timestamps: true,
@@ -49,17 +55,17 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-projectSchema.virtual('accounts', {
-  ref: 'Account',
-  localField: '_id',
-  foreignField: 'project'
-})
+projectSchema.virtual("accounts", {
+  ref: "Account",
+  localField: "_id",
+  foreignField: "project"
+});
 
-projectSchema.virtual('uploads', {
-  ref: 'Upload',
-  localField: '_id',
-  foreignField: 'project'
-})
+projectSchema.virtual("uploads", {
+  ref: "Upload",
+  localField: "_id",
+  foreignField: "project"
+});
 
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

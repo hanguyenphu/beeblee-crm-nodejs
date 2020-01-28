@@ -14,7 +14,7 @@ const uploadSchema = new mongoose.Schema(
 
     description: {
       type: String,
-      required: true
+      trim: true
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,

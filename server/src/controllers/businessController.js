@@ -127,6 +127,7 @@ exports.getBusinessDetail = async (req, res) => {
     await business.populate("province").execPopulate();
     await business.populate("projects").execPopulate();
 
+
     res.send({ business });
   } catch (err) {
     res.status(400).send();
