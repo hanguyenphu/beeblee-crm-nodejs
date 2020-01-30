@@ -1,0 +1,4 @@
+**/logs
+node_module/
+config/config.json
+config/dev.env
