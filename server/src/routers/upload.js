@@ -8,4 +8,6 @@ router.post("/uploads/:id", auth, uploadController.uploadFile );
 
  router.get("/uploads/:id", auth, uploadController.getAllUploads );
 
+ router.get("/individual-upload/:id", auth, uploadController.getIndividualUpload)
+
 module.exports = router;

@@ -40,3 +40,13 @@ exports.getAllUploads = async (req, res) => {
         return res.status(500).send()
     }
 }
+
+exports.getIndividualUpload = async (req, res) => {
+  const uploadId = req.params.id
+  try {
+      const upload = await Upload.findById(uploadId)
+      res.status(200).send(upload)
+  } catch (error) {
+    return res.status(500).send("Cannot fetch data")
+  }
+}

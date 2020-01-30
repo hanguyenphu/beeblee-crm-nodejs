@@ -9,11 +9,12 @@ const categoryRouter = require("./routers/category");
 const projectRouter = require("./routers/project");
 const accountRouter = require("./routers/account");
 const uploadRouter = require("./routers/upload")
+const adminUserRouter = require("./routers/admin/user")
 
 //file upload 2 lines below
  const bodyParser = require("body-parser");
  const multer = require("multer");
- const uploadImage = require('../../helpers/helpers')
+//  const uploadImage = require('../../helpers/helpers')
 
 //end file upload
 
@@ -75,6 +76,7 @@ app.use(statusRouter);
 app.use(categoryRouter);
 app.use(projectRouter);
 app.use(accountRouter);
+app.use(adminUserRouter)
 
 app.listen(port, () => {
   console.log("Server is up on port " + port);

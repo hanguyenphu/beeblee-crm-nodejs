@@ -67,5 +67,7 @@ projectSchema.virtual("uploads", {
   foreignField: "project"
 });
 
+
+
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

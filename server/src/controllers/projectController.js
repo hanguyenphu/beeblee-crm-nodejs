@@ -27,7 +27,7 @@ exports.getAllProjectsOfBusiness = async (req, res) => {
   }
 };
 
-//Populate data with pagination
+//Populate all project data with pagination
 //limit 1 page 10 items
 exports.getAllProjects = async (req, res) => {
   try {
@@ -84,6 +84,31 @@ exports.getAllProjects = async (req, res) => {
   }
 };
 
+exports.searchProjects = async (req, res) => {
+  try {
+    const name = req.body.name;
+    const status = req.body.status;
+    const category = req.body.category;
+
+    const nameRegex = new RegExp(name, "i");
+
+    var projects = await Project.find({ name: nameRegex });
+    var count = 0;
+    if (status) {
+      projects = projects.filter(project => project.status == status);
+      count = projects.length;
+    }
+    if (category) {
+      projects = projects.filter(project => project.category == category);
+      count = projects.length;
+    }
+
+    res.status(200).send({ projects, count });
+  } catch (error) {
+    res.status(500).send({ message: "Cannot fetch Data" });
+  }
+};
+
 exports.updateProject = async (req, res) => {
   const projectId = req.params.id;
   const allowUpdates = [
@@ -110,6 +135,24 @@ exports.updateProject = async (req, res) => {
 
     await project.save();
     res.send(project);
+  } catch (error) {
+    res.status(500).send();
+  }
+};
+
+exports.updateProjectContributor = async (req, res) => {
+  try {
+    const projectId = req.body.projectId;
+    const userIds = req.body.userIds;
+
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(400).send({ message: "Cannot find the project" });
+    }
+    project.contributors = userIds
+    await project.save()
+
+    res.status(200).send(project);
   } catch (error) {
     res.status(500).send();
   }
