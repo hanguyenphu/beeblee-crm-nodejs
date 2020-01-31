@@ -8,7 +8,22 @@ exports.createUser = async (req, res) => {
     // const token = await user.generateAuthToken();
     res.status(201).send({ user });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(500).send(e);
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    user = await User.findById(userId);
+    if (!user) {
+      res.status(400).send("Cannot find the user");
+    }
+    user.password = "123456789";
+    await user.save();
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(500).send("An error has been occurred");
   }
 };
 
@@ -115,9 +130,9 @@ exports.updateUserProfile = async (req, res) => {
 exports.adminUpdateUserProfile = async (req, res) => {
   const allowedUpdates = ["name", "email", "phone", "active", "role"];
   try {
-    var user = await User.findOne({"email": req.body.email})
-    if(!user) {
-        return res.status(400).send({message: "Cannot Find User"})
+    var user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send({ message: "Cannot Find User" });
     }
     allowedUpdates.forEach(async update => {
       if (!!req.body[update]) {

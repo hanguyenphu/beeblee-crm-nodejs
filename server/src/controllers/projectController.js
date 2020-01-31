@@ -1,10 +1,41 @@
 const Project = require("../models/project");
+const Status = require("../models/status");
+const User = require("../models/user");
+const sendEmail = require("../emails/account");
 
+/**
+ * Create new project
+ * send notification email to all admin and contributors
+ */
 exports.createProject = async (req, res) => {
   var project = new Project(req.body);
+
   project.contributors.push(req.user._id);
+  const admins = await User.find({ role: "admin", active: true });
+
+  //add admin to the new project as contributors
+  admins.forEach(admin => {
+    if (!project.contributors.includes(admin._id.toString())) {
+      project.contributors.push(admin._id);
+    }
+  });
   try {
     await project.save();
+    //sending email notify all contributors
+    //except the user that create the project
+    const users = await User.find({ _id: project.contributors });
+    if (users.length > 0) {
+      users.forEach(user => {
+        if (user._id.toString() != req.user._id.toString()) {
+          sendEmail.sendNotificationForNewProject(
+            user.email,
+            project,
+            req.user.name
+          );
+        }
+      });
+    }
+
     res.status(200).send(project);
   } catch (error) {
     res.status(500).send();
@@ -31,6 +62,7 @@ exports.getAllProjectsOfBusiness = async (req, res) => {
 //limit 1 page 10 items
 exports.getAllProjects = async (req, res) => {
   try {
+
     var pageNo = parseInt(req.query.pageNo);
     var size = 10;
     var query = {};
@@ -49,7 +81,7 @@ exports.getAllProjects = async (req, res) => {
     var count = 0;
 
     var projects = [];
-    //defend of role of user populate the project data
+    //if role===user populate the project data belong to him only
     //if admin populate all
     if (req.user.role === "admin") {
       projects = await Project.find({}, {}, query).sort({
@@ -124,9 +156,29 @@ exports.updateProject = async (req, res) => {
 
   try {
     const project = await Project.findById(projectId);
+
     if (!project) {
       return res.status(400).send();
     }
+    //Sending Email to notify status change to all contributors
+    if (req.body.status != project.status) {
+      const oldStatus = await Status.findById(project.status);
+      const newStatus = await Status.findById(req.body.status);
+      project.contributors.forEach(async userId => {
+        const user = await User.findById(userId);
+        if (user && user.active) {
+          const author = req.user;
+          await sendEmail.sendNotificationForStatusChange(
+            user.email,
+            project,
+            author.name,
+            oldStatus.title,
+            newStatus.title
+          );
+        }
+      });
+    }
+
     allowUpdates.forEach(update => {
       if (req.body[update]) {
         project[update] = req.body[update];
@@ -149,8 +201,22 @@ exports.updateProjectContributor = async (req, res) => {
     if (!project) {
       return res.status(400).send({ message: "Cannot find the project" });
     }
-    project.contributors = userIds
-    await project.save()
+
+    //Detect new contributors and send them notification email
+    const newContributorIds = userIds.filter(
+      userId => !project.contributors.includes(userId)
+    );
+    const newContributors = await User.find({ _id: newContributorIds });
+    newContributors.forEach(contributor => {
+      sendEmail.sendNotificationForNewProject(
+        contributor.email,
+        project,
+        req.user.name
+      );
+    });
+
+    project.contributors = userIds;
+    await project.save();
 
     res.status(200).send(project);
   } catch (error) {
