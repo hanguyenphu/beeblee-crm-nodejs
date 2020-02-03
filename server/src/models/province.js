@@ -22,8 +22,17 @@ const provinceSchema = new mongoose.Schema({
         type: SchemaType.Decimal128,
         required: true,
         trim: true
+    },
+    order: {
+        type: Number,
+        trim: true,
+        default: 0
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
-  
+
 })
 
 provinceSchema.virtual('businesses', {

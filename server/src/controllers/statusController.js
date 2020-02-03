@@ -15,7 +15,7 @@ exports.createStatus = async (req, res) => {
 exports.updateStatus = async (req, res) => {
     const _id = req.params.id;
     try {
-        const allowUpdates = ["title", "color"]
+        const allowUpdates = ["title", "color", "order", "active"]
         const status = await Status.findById(_id)
         if(!status){
             res.status(400).send("Cannot Find the Status");
@@ -33,7 +33,7 @@ exports.updateStatus = async (req, res) => {
 //Get all statuses
 exports.getAllStatus = async (req, res) => {
   try {
-    const statuses = await Status.find({});
+    const statuses = await Status.find({}).sort({order: 1});
     res.send(statuses);
   } catch (err) {
     res.status(400).send();

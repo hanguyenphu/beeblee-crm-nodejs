@@ -11,6 +11,15 @@ const categorySchema = new mongoose.Schema(
         description: {
             type: String,
             trim: true
+        },
+        order: {
+            type: Number,
+            trim: true,
+            default: 0
+        },
+        active: {
+            type: Boolean,
+            default: true
         }
     },
     {

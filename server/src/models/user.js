@@ -24,12 +24,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        trim: true,
-        validate(value) {
-            if (value.toLowerCase().includes("password")) {
-                throw new Error('Password cannot contain "password');
-            }
-        }
+        trim: true
     },
     active: {
         type: Boolean,
@@ -93,6 +88,7 @@ userSchema.methods.generateAuthToken = async function() {
 
 userSchema.statics.findByCredential = async (email, password) => {
     const user = await User.findOne({email})
+
     if(!user) {
         throw new Error('Email or Password is incorrect')
     }

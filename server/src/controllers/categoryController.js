@@ -15,10 +15,28 @@ exports.createCategory = async (req, res) => {
 //Get all statuses
 exports.getAllCategories  = async (req, res) => {
     try {
-        const categories = await Category.find({});
+        const categories = await Category.find({}).sort({order: 1});
         res.send(categories);
     } catch (err) {
         res.status(400).send();
     }
 }
 
+//Update Category
+exports.updateCategory = async (req, res) => {
+    const _id = req.params.id;
+    try {
+        const allowUpdates = ["title", "description", "order", "active"]
+        const category = await Category.findById(_id)
+        if(!category){
+            res.status(400).send("Cannot Find the Category");
+        }
+        allowUpdates.forEach(update => {
+            category[update] = req.body[update]
+        })
+        await category.save()
+        res.status(201).send(category);
+    } catch (error) {
+        res.status(500).send("Cannot Update Category");
+    }
+};

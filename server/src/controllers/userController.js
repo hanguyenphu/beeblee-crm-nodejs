@@ -28,8 +28,10 @@ exports.resetPassword = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+
   try {
     const user = await User.findByCredential(req.body.email, req.body.password);
+
     if (!user.active) {
       return res.status(400).send({ message: "Not Authorized" });
     }

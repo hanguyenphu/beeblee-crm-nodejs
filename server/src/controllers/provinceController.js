@@ -2,7 +2,11 @@ const Province = require("../models/province");
 
 //Create a new Province
 exports.createProvince = async (req, res) => {
-  const province = new Province(req.body);
+  let province = new Province(req.body);
+  province.gst = parseFloat(province.gst);
+  province.hst = parseFloat(province.hst);
+  province.pst = parseFloat(province.pst);
+
   try {
     await province.save();
     res.status(201).send(province);
@@ -14,7 +18,7 @@ exports.createProvince = async (req, res) => {
 //Get all provinces
 exports.getAllProvinces = async (req, res) => {
   try {
-    const provinces = await Province.find({});
+    const provinces = await Province.find({}).sort({ order: 1 });
     res.send(provinces);
   } catch (err) {
     res.status(400).send();
@@ -36,18 +40,8 @@ exports.getProvinceDetail = async (req, res) => {
 
 //Update a province
 exports.updateProvince = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowUpdates = ["name", "gst", "pst", "hst"];
-  const isValidOperation = updates.every(update => {
-    return allowUpdates.includes(update);
-  });
-
-  if (!isValidOperation) {
-    return res.status(400).send();
-  }
-
+  const allowUpdates = ["name", "gst", "pst", "hst", "active", "order"];
   const _id = req.params.id;
-
   try {
     const province = await Province.findById(_id);
 
@@ -55,7 +49,7 @@ exports.updateProvince = async (req, res) => {
       return res.status(400).send();
     }
 
-    updates.forEach(update => (province[update] = req.body[update]));
+    allowUpdates.forEach(update => (province[update] = req.body[update]));
     await province.save();
     res.send(province);
   } catch (err) {

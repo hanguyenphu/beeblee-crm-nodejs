@@ -12,6 +12,16 @@ const statusSchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true
+        },
+        order: {
+            type: Number,
+            required: true,
+            trim: true,
+            default: 0
+        },
+        active: {
+            type: Boolean,
+            default: true
         }
     },
     {
