@@ -64,6 +64,7 @@ app.use(function(req, res, next) {
     "Access-Control-Allow-Methods",
     "GET, POST, PATCH, DELETE, OPSTIONS"
   );
+
   next();
 });
 

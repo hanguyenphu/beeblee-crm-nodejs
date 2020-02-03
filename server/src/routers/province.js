@@ -9,7 +9,7 @@ const provinceController = require("../controllers/provinceController")
 router.post("/provinces", adminAuth, provinceController.createProvince );
 
 // Get all provinces
-router.get("/provinces", auth, provinceController.getAllProvinces);
+router.get("/provinces", provinceController.getAllProvinces);
 
 router.get("/provinces/:id", auth, provinceController.getProvinceDetail)
 
