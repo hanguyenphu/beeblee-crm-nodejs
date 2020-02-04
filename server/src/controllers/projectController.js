@@ -161,7 +161,8 @@ exports.updateProject = async (req, res) => {
       return res.status(400).send();
     }
     //Sending Email to notify status change to all contributors
-    if (req.body.status != project.status) {
+
+    if (req.body.status._id != project.status.toString()) {
       const oldStatus = await Status.findById(project.status);
       const newStatus = await Status.findById(req.body.status);
       project.contributors.forEach(async userId => {

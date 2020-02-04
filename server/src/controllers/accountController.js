@@ -1,11 +1,13 @@
 const Account = require("../models/account")
+
 exports.createAccount = async (req, res) => {
-    const account = new Account(req.body)
+    let account = new Account(req.body)
+    account.price = parseFloat(account.price) || 0.00
     try {
         await account.save()
         res.status(200).send(account)
     } catch (error) {
-        res.status(400).send(e);
+        res.status(400).send(error);
     }
 }
 
