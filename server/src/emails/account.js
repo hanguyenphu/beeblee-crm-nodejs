@@ -2,7 +2,7 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const URL = "http://localhost:3001";
+const URL = "http://beeblee-crm.herokuapp.com/";
 
 const sendNotificationForStatusChange = (
   email,
