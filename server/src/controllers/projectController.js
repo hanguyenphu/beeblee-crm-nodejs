@@ -121,10 +121,11 @@ exports.searchProjects = async (req, res) => {
     const name = req.body.name;
     const status = req.body.status;
     const category = req.body.category;
+    const contributor = req.body.contributor
 
     const nameRegex = new RegExp(name, "i");
 
-    var projects = await Project.find({ name: nameRegex });
+    var projects = await Project.find({ name: nameRegex }).sort({ createdAt: -1});
     var count = 0;
     if (status) {
       projects = projects.filter(project => project.status == status);
@@ -132,6 +133,11 @@ exports.searchProjects = async (req, res) => {
     }
     if (category) {
       projects = projects.filter(project => project.category == category);
+      count = projects.length;
+    }
+
+    if(contributor) {
+      projects = projects.filter(project => project.contributors.includes(contributor))
       count = projects.length;
     }
 
