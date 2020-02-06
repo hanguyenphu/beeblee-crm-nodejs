@@ -18,7 +18,7 @@ const projectSchema = new mongoose.Schema(
       trim: true
     },
     price: {
-      type: SchemaType.Decimal128,
+      type: String,
       required: true,
       trim: true
     },

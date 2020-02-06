@@ -2,7 +2,7 @@ const Account = require("../models/account")
 
 exports.createAccount = async (req, res) => {
     let account = new Account(req.body)
-    account.price = parseFloat(account.price) || 0.00
+    // account.price = parseFloat(account.price) || 0.00
     try {
         await account.save()
         res.status(200).send(account)

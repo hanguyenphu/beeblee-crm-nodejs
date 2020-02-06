@@ -23,7 +23,7 @@ const accountSchema = new mongoose.Schema(
       type: Date
     },
     price: {
-      type: SchemaType.Decimal128
+      type: String
     },
     description: {
       type: String

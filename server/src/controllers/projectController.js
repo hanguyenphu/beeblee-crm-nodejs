@@ -21,6 +21,7 @@ exports.createProject = async (req, res) => {
   });
   try {
     await project.save();
+    console.log(project)
     //sending email notify all contributors
     //except the user that create the project
     const users = await User.find({ _id: project.contributors });
@@ -38,6 +39,7 @@ exports.createProject = async (req, res) => {
 
     res.status(200).send(project);
   } catch (error) {
+    console.log(error)
     res.status(500).send();
   }
 };
@@ -62,7 +64,6 @@ exports.getAllProjectsOfBusiness = async (req, res) => {
 //limit 1 page 10 items
 exports.getAllProjects = async (req, res) => {
   try {
-
     var pageNo = parseInt(req.query.pageNo);
     var size = 10;
     var query = {};
@@ -121,11 +122,13 @@ exports.searchProjects = async (req, res) => {
     const name = req.body.name;
     const status = req.body.status;
     const category = req.body.category;
-    const contributor = req.body.contributor
+    const contributor = req.body.contributor;
 
     const nameRegex = new RegExp(name, "i");
 
-    var projects = await Project.find({ name: nameRegex }).sort({ createdAt: -1});
+    var projects = await Project.find({ name: nameRegex }).sort({
+      createdAt: -1
+    });
     var count = 0;
     if (status) {
       projects = projects.filter(project => project.status == status);
@@ -136,8 +139,10 @@ exports.searchProjects = async (req, res) => {
       count = projects.length;
     }
 
-    if(contributor) {
-      projects = projects.filter(project => project.contributors.includes(contributor))
+    if (contributor) {
+      projects = projects.filter(project =>
+        project.contributors.includes(contributor)
+      );
       count = projects.length;
     }
 
@@ -172,16 +177,19 @@ exports.updateProject = async (req, res) => {
       const oldStatus = await Status.findById(project.status);
       const newStatus = await Status.findById(req.body.status);
       project.contributors.forEach(async userId => {
-        const user = await User.findById(userId);
-        if (user && user.active) {
-          const author = req.user;
-          await sendEmail.sendNotificationForStatusChange(
-            user.email,
-            project,
-            author.name,
-            oldStatus.title,
-            newStatus.title
-          );
+        if (userId != req.user._id.toString()) {
+          const user = await User.findById(userId);
+          if (user && user.active) {
+            const author = req.user;
+
+            await sendEmail.sendNotificationForStatusChange(
+              user.email,
+              project,
+              author.name,
+              oldStatus.title,
+              newStatus.title
+            );
+          }
         }
       });
     }
