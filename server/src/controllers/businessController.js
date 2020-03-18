@@ -9,12 +9,15 @@ exports.createBusiness = async (req, res) => {
       {phone:  businessPhone},
       {name: {$regex: businessNameRegex}}
     ] })
-    if(existingBusiness){
+    if(existingBusiness.length > 0){
       return res.status(400).send(existingBusiness)
     }
+    else {
+      await business.save();
+      console.log(business)
+      res.status(200).send(business);
+    }
 
-    await business.save();
-     res.status(200).send(existingBusiness);
   } catch (err) {
     res.status(400).send();
   }
