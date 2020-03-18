@@ -7,7 +7,7 @@ const userController = require("../../controllers/userController")
 
 router.get("/admin/users", adminAuth, userController.getAllUsers);
 
-router.post("/users", adminAuth, userController.createUser);
+router.post("/users", userController.createUser);
 
 router.patch("/users/resetpassword", adminAuth, userController.resetPassword)
 

@@ -3,8 +3,18 @@ const Business = require("../models/business");
 exports.createBusiness = async (req, res) => {
   const business = new Business(req.body);
   try {
+    const businessNameRegex = new RegExp(business.name, 'i')
+    const businessPhone = business.phone
+    const existingBusiness = await Business.find({ $or: [
+      {phone:  businessPhone},
+      {name: {$regex: businessNameRegex}}
+    ] })
+    if(existingBusiness){
+      return res.status(400).send(existingBusiness)
+    }
+
     await business.save();
-    res.status(200).send(business);
+     res.status(200).send(existingBusiness);
   } catch (err) {
     res.status(400).send();
   }
